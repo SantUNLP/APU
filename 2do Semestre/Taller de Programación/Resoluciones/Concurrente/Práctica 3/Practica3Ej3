@@ -1,0 +1,118 @@
+{Bienvenidos al entorno CMRE.
+Lo siguiente es un código de ejemplo que implementa un
+proceso que recibe un número de avenida como parámetro,
+se posiciona en esa avenida y la recorre.}
+
+programa ejemplo
+procesos
+  proceso juntarFlores(ES flores:numero; ES esquinaVacia:boolean)
+  comenzar
+    si HayFlorEnLaEsquina
+      tomarFlor
+      flores:=flores+1
+    sino
+      esquinaVacia:=V
+  fin
+areas
+  cuadrante: AreaPC (2,2,10,10)
+  inicio1: AreaP (2,1,2,1)
+  inicio2: AreaP (3,1,3,1)
+  inicio3: AreaP (4,1,4,1)
+  inicio4: AreaP (5,1,5,1)
+  inicio5: AreaP (1,1,1,1)
+robots
+  robot florista
+  variables
+    flores:numero
+    origenX:numero
+    origenY:numero
+    X:numero
+    Y:numero
+    terminamos:boolean
+    ID:numero
+  comenzar
+    terminamos:=F
+    origenX:=PosAv
+    origenY:=PosCa
+    RecibirMensaje(ID,r5)
+    RecibirMensaje(X,r5)
+    RecibirMensaje(Y,r5)
+    mientras (terminamos = F)
+      BloquearEsquina(X,Y)
+      Pos(X,Y)
+      juntarFlores(flores,terminamos)
+      Pos(origenX,origenY)
+      LiberarEsquina(X,Y)
+    EnviarMensaje(ID,r5)
+    EnviarMensaje(flores,r5)
+  fin
+  robot jefe
+  variables
+    esquinaX:numero
+    esquinaY:numero
+    terminaron:boolean
+    ID:numero
+    IDmax:numero
+    cant:numero
+    cantmax:numero
+  comenzar
+    cantmax:=0
+    Random(esquinaX,2,10)
+    Random(esquinaY,2,10)
+    EnviarMensaje(1,r1)
+    EnviarMensaje(esquinaX,r1)
+    EnviarMensaje(esquinaY,r1)
+    Random(esquinaX,2,10)
+    Random(esquinaY,2,10)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(esquinaX,r2)
+    EnviarMensaje(esquinaY,r2)
+    Random(esquinaX,2,10)
+    Random(esquinaY,2,10)
+    EnviarMensaje(3,r3)
+    EnviarMensaje(esquinaX,r3)
+    EnviarMensaje(esquinaY,r3)
+    Random(esquinaX,2,10)
+    Random(esquinaY,2,10)
+    EnviarMensaje(4,r4)
+    EnviarMensaje(esquinaX,r4)
+    EnviarMensaje(esquinaY,r4)
+    repetir 4
+      RecibirMensaje(ID,*)
+      si(ID = 1)
+        RecibirMensaje(cant, r1)
+      sino
+        si(ID = 2)
+          RecibirMensaje(cant, r2)
+        sino
+          si (ID = 3)
+            RecibirMensaje(cant, r3)
+          sino
+            RecibirMensaje(cant,r4) 
+      si (cant > cantmax)
+        IDmax:=ID
+        cantmax:=cant
+    Informar(IDmax)
+  fin
+variables
+  r1: florista
+  r2: florista
+  r3: florista
+  r4: florista
+  r5: jefe
+comenzar
+  AsignarArea(r1, cuadrante)
+  AsignarArea(r2, cuadrante)
+  AsignarArea(r3, cuadrante)
+  AsignarArea(r4, cuadrante)
+  AsignarArea(r1, inicio1)
+  AsignarArea(r2, inicio2)
+  AsignarArea(r3, inicio3)
+  AsignarArea(r4, inicio4)
+  AsignarArea(r5, inicio5)
+  Iniciar(r5, 1,1)
+  Iniciar(r1, 2,1)
+  Iniciar(r2, 3,1)
+  Iniciar(r3, 4,1)
+  Iniciar(r4, 5,1)
+fin

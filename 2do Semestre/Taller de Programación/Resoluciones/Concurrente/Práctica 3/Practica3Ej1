@@ -1,0 +1,103 @@
+{Bienvenidos al entorno CMRE.
+Lo siguiente es un cÃƒÂ³digo de ejemplo que implementa un
+proceso que recibe un nÃƒÂºmero de avenida como parÃƒÂ¡metro,
+se posiciona en esa avenida y la recorre.}
+
+programa ejemplo
+procesos
+  proceso juntarFlores
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+  fin
+  
+  proceso juntarPapeles
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+  fin
+  
+  proceso depositarFlores
+  comenzar
+    mientras HayFlorEnLaBolsa
+      depositarFlor
+  fin
+  
+  proceso depositarPapeles
+  comenzar
+    mientras HayPapelEnLaBolsa
+      depositarPapel
+  fin
+areas
+  areaF: AreaPC (1,1,5,10)
+  areaP: AreaPC (6,1,10,9)
+  areaInicio: AreaC(6,10,10,10)
+robots
+  robot florero
+  variables
+    flores:numero
+    origenX:numero
+    origenY:numero
+    X:numero
+    Y:numero
+  comenzar
+    flores:=0
+    origenX:=PosAv
+    origenY:=PosCa
+    repetir 5
+      Random(X,1,5)
+      Random(Y,5,10)
+      BloquearEsquina(X,Y)
+      Pos(X,Y)
+      juntarFlores
+      Pos(origenX,origenY)
+      LiberarEsquina(X,Y)
+      BloquearEsquina(10,10)
+      Pos(10,10)
+      depositarFlores
+      Pos(origenX,origenY)
+      LiberarEsquina(10,10)
+  fin
+  robot papelero
+  variables
+    origenX:numero
+    origenY:numero
+    X:numero
+    Y:numero
+  comenzar
+    origenX:=PosAv
+    origenY:=PosCa
+    repetir 3
+      Random(X,6,10)
+      Random(Y,1,9)
+      BloquearEsquina(X,Y)
+      Pos(X,Y)
+      juntarPapeles
+      Pos(origenX,origenY)
+      LiberarEsquina(X,Y)
+      BloquearEsquina(10,10)
+      Pos(10,10)
+      depositarPapeles
+      Pos(origenX,origenY)
+      LiberarEsquina(10,10)
+  fin
+variables
+  r1: florero
+  r2: florero
+  r3: papelero
+  r4: papelero
+comenzar
+  AsignarArea(r1, areaF)
+  AsignarArea(r2, areaF)
+  AsignarArea(r3, areaP)
+  AsignarArea(r4, areaP)
+  AsignarArea(r1, areaInicio)
+  AsignarArea(r2, areaInicio)
+  AsignarArea(r3, areaInicio)
+  AsignarArea(r4, areaInicio)
+  Iniciar(r1,6,10)
+  Iniciar(r2,7,10)
+  Iniciar(r3,8,10)
+  Iniciar(r4,9,10)
+  
+fin

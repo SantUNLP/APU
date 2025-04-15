@@ -1,0 +1,145 @@
+{Bienvenidos al entorno CMRE.
+Lo siguiente es un código de ejemplo que implementa un
+proceso que recibe un número de avenida como parámetro,
+se posiciona en esa avenida y la recorre.}
+
+programa ejemplo
+procesos
+  proceso juntarFlores
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+  fin
+  proceso juntarPapeles
+  comenzar
+    mientras HayPapelEnLaEsquina
+      tomarPapel
+  fin
+  proceso izquierda
+  comenzar
+    repetir 3
+      derecha
+  fin
+  proceso escaleraDerecha(E ID:numero)
+  variables
+    contador:numero
+  comenzar
+    contador:=5
+    repetir 4
+      repetir contador
+        mover
+      derecha
+      juntarFlores
+      repetir contador
+        mover
+      izquierda
+      contador:=contador-1
+    mover
+    derecha
+    BloquearEsquina(16,16)
+    mover
+    EnviarMensaje(ID,r3)
+    juntarFlores
+    repetir 2
+      izquierda
+    mover
+    LiberarEsquina(16,16)
+  fin
+  proceso escaleraIzquierda(E ID:numero)
+  variables
+    contador:numero
+  comenzar
+    contador:=5
+    repetir 4
+      repetir contador
+        mover
+      izquierda
+      juntarPapeles
+      repetir contador
+        mover
+      derecha
+      contador:=contador-1
+    mover
+    izquierda
+    BloquearEsquina(16,16)
+    mover
+    EnviarMensaje(ID,r3)
+    juntarPapeles
+    repetir 2
+      derecha
+    mover
+    LiberarEsquina(16,16)
+  fin
+  proceso escaleraIzquierdaArriba
+  variables
+    contador:numero
+  comenzar
+    contador:=2
+    repetir 4
+      repetir contador
+        mover
+      derecha
+      juntarPapeles
+      repetir contador
+        mover
+      izquierda
+      contador:=contador+1
+  fin
+  proceso escaleraDerechaArriba
+  variables
+    contador:numero
+  comenzar
+    contador:=2
+    repetir 4
+      repetir contador
+        mover
+      izquierda
+      juntarPapeles
+      repetir contador
+        mover
+      derecha
+      contador:=contador+1
+  fin
+areas
+  ciudad: AreaP (1,1,100,100)
+robots
+  robot flores
+  variables
+    ID:numero
+  comenzar
+    RecibirMensaje(ID,r3)
+    escaleraDerecha(ID)
+    escaleraIzquierdaArriba
+  fin
+  robot papeles
+  variables
+    ID:numero
+  comenzar
+    RecibirMensaje(ID,r3)
+    escaleraIzquierda(ID)
+    escaleraDerechaArriba
+  fin
+  robot jefe
+  variables
+    quien:numero
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    RecibirMensaje(quien,*)
+    si quien=1
+      Informar(1)
+    sino
+      Informar(2)
+  fin
+variables
+  r1: flores
+  r2: papeles
+  r3: jefe
+comenzar
+  AsignarArea(r1, ciudad)
+  AsignarArea(r2, ciudad)
+  AsignarArea(r3, ciudad)
+  Iniciar(r1, 1,1)
+  Iniciar(r2,31,1)
+  Iniciar(r3, 15,1)
+fin
