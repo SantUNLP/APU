@@ -1,0 +1,90 @@
+{Bienvenidos al entorno CMRE.
+Lo siguiente es un código de ejemplo que implementa un
+proceso que recibe un número de avenida como parámetro,
+se posiciona en esa avenida y la recorre.}
+
+programa ejemplo
+procesos
+  proceso juntarFlores(ES flores:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flores:=flores+1
+  fin
+  
+  proceso juntarPapeles(ES papeles:numero)
+  comenzar
+    mientras HayPapelEnLaEsquina
+      tomarPapel
+      papeles:=papeles+1
+  fin
+  proceso recorrerAvenidaP(ES papeles:numero)
+  variables
+    avenidaR2:numero
+  comenzar
+    repetir 24
+      repetir 99
+        avenidaR2:=PosAv
+        juntarPapeles(papeles)
+        mover
+      juntarPapeles(papeles)
+      Pos(avenidaR2+1,1)
+    repetir 99
+      juntarPapeles(papeles)
+      mover
+    juntarPapeles(papeles)
+  fin
+  proceso recorrerAvenidaF(ES flores:numero)
+  variables
+    avenidaR1:numero
+  comenzar
+    repetir 24
+      avenidaR1:=PosAv
+      repetir 99
+        juntarFlores(flores)
+        mover
+      juntarFlores(flores)
+      Pos(avenidaR1+1,1)
+    repetir 99
+      juntarFlores(flores)
+      mover
+    juntarFlores(flores)
+  fin
+areas
+  areaPrivada1: AreaP (1,1,25,100)
+  areaPrivada2: AreaP (26,1,50,100)
+  areaPrivada3: AreaP (51,1,75,100)
+  areaPrivada4: AreaP (76,1,100,100)
+robots
+  robot robot1
+  variables
+    flores:numero
+  comenzar
+    flores:=0
+    recorrerAvenidaF(flores)
+    Pos(51,1)
+    recorrerAvenidaF(flores)
+    informar(flores)
+  fin
+  
+  robot robot2
+  variables
+    papeles:numero
+  comenzar
+    papeles:=0
+    recorrerAvenidaP(papeles)
+    Pos(76,1)
+    recorrerAvenidaP(papeles)
+    informar(papeles)
+  fin
+variables
+  R_info: robot1
+  R_dos: robot2
+comenzar
+  AsignarArea(R_info, areaPrivada1)
+  AsignarArea(R_dos, areaPrivada2)
+  AsignarArea(R_info, areaPrivada3)
+  AsignarArea(R_dos, areaPrivada4)
+  Iniciar(R_info, 1,1)
+  Iniciar(R_dos,26,1)
+fin
