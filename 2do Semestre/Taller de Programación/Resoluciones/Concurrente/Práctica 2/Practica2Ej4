@@ -1,0 +1,89 @@
+{Bienvenidos al entorno CMRE.
+Lo siguiente es un código de ejemplo que implementa un
+proceso que recibe un número de avenida como parámetro,
+se posiciona en esa avenida y la recorre.}
+
+programa ejemplo
+procesos
+  proceso juntarFlores(ES flores:numero)
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+      flores:=flores+1
+  fin
+  proceso juntarPapeles(ES papeles:numero)
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarPapel
+      papeles:=papeles+1
+  fin
+areas
+  areaInicio: AreaC (25,1,40,1)
+  areaRecolectores: AreaPC (25,25,75,75)
+  areaJefe: AreaP(1,1,1,1)
+robots
+  robot recolector
+  variables
+    puede:boolean
+    calle:numero
+    avenida:numero
+    termine:boolean
+    flores:numero
+    papeles:numero
+    origenX:numero
+    origenY:numero
+  comenzar
+    termine:=F
+    origenY:=PosAv
+    origenX:=PosCa
+    RecibirMensaje(puede,jefe)
+    mientras (puede = V)
+      Random(avenida,25,75)
+      Random(calle,25,75)
+      Pos(avenida,calle)
+      juntarFlores(flores)
+      juntarPapeles(papeles)
+      termine:=V
+      Pos(origenY,origenX)
+      EnviarMensaje(termine,jefe)
+      RecibirMensaje(puede,jefe)
+  fin
+  robot fiscalizador
+  variables
+    quien:numero
+    termino:boolean
+  comenzar
+    repetir 10
+      Random(quien,1,4)
+      si (quien = 1)
+        EnviarMensaje(V,r1)
+      si (quien = 2)
+        EnviarMensaje(V,r2)
+      si (quien = 3)
+        EnviarMensaje(V,r3)
+      si (quien = 4)
+        EnviarMensaje(V,r4)
+      RecibirMensaje(termino,*)
+  fin
+variables
+  jefe : fiscalizador
+  r1 : recolector
+  r2 : recolector
+  r3 : recolector
+  r4 : recolector
+comenzar
+  AsignarArea(jefe, areaJefe)
+  AsignarArea(r1, areaInicio)
+  AsignarArea(r2, areaInicio)
+  AsignarArea(r3, areaInicio)
+  AsignarArea(r4, areaInicio)
+  AsignarArea(r1, areaRecolectores)
+  AsignarArea(r2, areaRecolectores)
+  AsignarArea(r3, areaRecolectores)
+  AsignarArea(r4, areaRecolectores)
+  Iniciar(jefe, 1,1)
+  Iniciar(r1, 25,1)
+  Iniciar(r2, 30,1)
+  Iniciar(r3, 35,1)
+  Iniciar(r4, 40,1)
+fin
