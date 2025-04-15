@@ -1,0 +1,125 @@
+{Bienvenidos al entorno CMRE.
+Lo siguiente es un código de ejemplo que implementa un
+proceso que recibe un número de avenida como parámetro,
+se posiciona en esa avenida y la recorre.}
+
+programa ejemplo
+procesos
+  proceso izquierda
+  comenzar
+    repetir 3
+      derecha
+  fin
+  proceso juntarPapeles
+  comenzar
+    mientras HayPapelEnLaEsquina
+      tomarPapel
+  fin
+  proceso depositar(E papeles:numero)
+  variables
+    av,ca:numero
+  comenzar
+    av:=PosAv
+    ca:=PosCa
+    BloquearEsquina(99,99)
+    Pos(99,99)
+    repetir papeles
+      dejarPapel
+    Pos(av,ca)
+    LiberarEsquina(99,99)
+  fin
+  proceso RealizarEscalon(E alto:numero; E ancho:numero; ES cantE:numero)
+  variables
+    papeles:numero
+  comenzar
+    papeles:=0
+    repetir alto
+      si(HayPapelEnLaEsquina)
+        juntarPapeles(papeles)
+        cantE:=cantE+1
+      mover
+    derecha
+    depositar(papeles)
+    repetir ancho
+      si(HayPapelEnLaEsquina)
+        juntarPapeles
+        cantE:=cantE+1
+      mover
+    izquierda
+    depositar(papeles)
+  fin
+  proceso juntarDeposito
+  comenzar
+    Pos(99,99)
+    juntarPapeles
+    Pos(1,1)
+  fin
+areas
+  deposito: AreaP(99,99,99,99)
+  areap1: AreaP(2,1,18,13)
+  areap2: AreaP(32,1,50,13)
+  areap3: AreaP(62,1,80,13)
+  areaf: AreaP(1,1,1,1)
+robots
+  robot papelero
+  variables
+    ID,cantE,alto,ancho:numero
+    seguir:boolean
+  comenzar
+    seguir:=F
+    RecibirMensaje(ID,f)
+    repetir 4
+      Random(alto,1,3)
+      Random(ancho,2,4)
+      RealizarEscalon(alto,ancho,cantE)
+      EnviarMensaje(ID,f)
+      RecibirMensaje(seguir,f)
+    EnviarMensaje(ID,f)
+    EnviarMensaje(cantE,f)
+  fin
+  robot fiscalizador
+  variables
+    cantE,cantT,ID:numero
+  comenzar
+    cantT:=0
+    EnviarMensaje(1,p1)
+    EnviarMensaje(2,p2)
+    EnviarMensaje(3,p3)
+    repetir 4
+      repetir 3
+        RecibirMensaje(ID,*)
+      EnviarMensaje(V,p1)
+      EnviarMensaje(V,p2)
+      EnviarMensaje(V,p3)
+    repetir 3
+      RecibirMensaje(ID,*)
+      si ID=1
+        RecibirMensaje(cantE,p1)
+        cantT:=cantT+cantE
+      sino
+        si ID=2
+          RecibirMensaje(cantE,p2)
+          cantT:=cantT+cantE
+        sino
+          RecibirMensaje(cantE,p3)
+          cantT:=cantT+cantE
+    juntarDeposito
+    Informar(cantT)
+  fin
+variables
+  p1,p2,p3:papelero
+  f:fiscalizador
+comenzar
+  AsignarArea(p1,areap1)
+  AsignarArea(p2,areap2)
+  AsignarArea(p3,areap3)
+  AsignarArea(f,areaf)
+  AsignarArea(p1,deposito)
+  AsignarArea(p2,deposito)
+  AsignarArea(p3,deposito)
+  AsignarArea(f,deposito)
+  Iniciar(f,1,1)
+  Iniciar(p1,2,1)
+  Iniciar(p2,32,1)
+  Iniciar(p3,62,1)
+fin

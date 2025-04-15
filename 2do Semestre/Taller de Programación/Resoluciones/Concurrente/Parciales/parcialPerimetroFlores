@@ -1,0 +1,188 @@
+{Bienvenidos al entorno CMRE.
+Lo siguiente es un código de ejemplo que implementa un
+proceso que recibe un número de avenida como parámetro,
+se posiciona en esa avenida y la recorre.}
+
+programa ejemplo
+procesos
+  proceso depositarFlores
+  comenzar
+    si HayFlorEnLaBolsa
+      depositarFlor
+  fin
+  proceso juntarFlores(ES flores:numero)
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+      flores:=flores+1
+  fin
+  proceso realizarTarea(ES flores:numero)
+  comenzar
+    repetir 9
+      juntarFlores(flores)
+      mover
+    juntarFlores(flores)
+    derecha
+    repetir 9
+      juntarFlores(flores)
+      mover
+    juntarFlores(flores)
+  fin
+  proceso izquierda
+  comenzar
+    repetir 3
+      derecha
+  fin
+areas
+  areaF: AreaP (30,1,30,1)
+  areaEquipos: AreaC (1,1,100,100)
+robots
+  robot equipoA1
+  variables
+    av:numero
+    ca:numero
+    ID:numero
+    flores:numero
+    continuar:boolean
+  comenzar
+    flores:=0
+    continuar:=V
+    RecibirMensaje(ID,f)
+    realizarTarea(flores)
+    av:=PosAv
+    ca:=PosCa
+    EnviarMensaje(continuar,r2)
+    EnviarMensaje(ID,f)
+    EnviarMensaje(flores,f)
+    mientras HayFlorEnLaBolsa
+      BloquearEsquina(20,20)
+      Pos(20,20)
+      depositarFlores
+      Pos(av,ca)
+      LiberarEsquina(20,20)
+    
+  fin
+  robot equipoA2
+  variables
+    av,ca:numero
+    ID:numero
+    flores:numero
+    continuar:boolean
+  comenzar
+    flores:=0
+    continuar:=F
+    RecibirMensaje(ID,f)
+    repetir 2
+      derecha
+    mientras continuar=F
+      RecibirMensaje(continuar,r1)
+    realizarTarea(flores)
+    av:=PosAv
+    ca:=PosCa
+    EnviarMensaje(ID,f)
+    EnviarMensaje(flores,f)
+    mientras (HayFlorEnLaBolsa)
+      BloquearEsquina(20,20)
+      Pos(20,20)
+      depositarFlores
+      Pos(av,ca)
+      LiberarEsquina(20,20)
+  fin
+  robot equipoB1
+  variables
+    ID:numero
+    flores:numero
+    continuar:boolean
+  comenzar
+    flores:=0
+    continuar:=V
+    RecibirMensaje(ID,f)
+    realizarTarea(flores)
+    EnviarMensaje(continuar,r4)
+    EnviarMensaje(ID,f)
+    EnviarMensaje(flores,f)
+    mientras HayFlorEnLaBolsa
+      BloquearEsquina(20,20)
+      Pos(20,20)
+      depositarFlores
+      Pos(av,ca)
+      LiberarEsquina(20,20)
+  fin
+  robot equipoB2
+  variables
+    ID:numero
+    flores:numero
+    continuar:boolean
+  comenzar
+    flores:=0
+    continuar:=F
+    RecibirMensaje(ID,f)
+    repetir 2
+      derecha
+    mientras continuar=F
+      RecibirMensaje(continuar,r3)
+    realizarTarea(flores)
+    EnviarMensaje(ID,f)
+    EnviarMensaje(flores,f)
+    mientras HayFlorEnLaBolsa
+      BloquearEsquina(20,20)
+      Pos(20,20)
+      depositarFlores
+      Pos(av,ca)
+      LiberarEsquina(20,20)
+  fin
+  robot fiscalizador
+  variables
+    floresA,floresB,flores:numero
+    ID:numero
+  comenzar
+    floresA:=0
+    floresB:=0
+    flores:=0
+    ID:=1
+    EnviarMensaje(ID,r1)
+    ID:=2
+    EnviarMensaje(ID,r2)
+    ID:=3
+    EnviarMensaje(ID,r3)
+    ID:=4
+    EnviarMensaje(ID,r4)
+    repetir 4
+      RecibirMensaje(ID,*)
+      si ID=1
+        RecibirMensaje(flores,r1)
+        floresA:=floresA+flores
+      sino
+        si ID=2
+          RecibirMensaje(flores,r2)
+          floresA:=floresA+flores
+        sino
+          si ID=3
+            RecibirMensaje(flores,r3)
+            floresB:=floresB+flores
+          sino
+            RecibirMensaje(flores,r4)
+            floresB:=floresB+flores
+    si floresA>floresB
+      Informar("equipoA",floresA)
+    sino
+      Informar("equipoB",floresB)
+  fin
+variables
+  r1: equipoA1
+  r2: equipoA2
+  r3: equipoB1
+  r4: equipoB2
+  f:fiscalizador
+comenzar
+  AsignarArea(f,areaF)
+  AsignarArea(r1,areaEquipos)
+  AsignarArea(r2,areaEquipos)
+  AsignarArea(r3,areaEquipos)
+  AsignarArea(r4,areaEquipos)
+  Iniciar(f,30,1)
+  Iniciar(r1,1,1)
+  Iniciar(r2,11,10)
+  Iniciar(r3,13,1)
+  Iniciar(r4,23,10)
+fin

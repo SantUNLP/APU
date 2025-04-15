@@ -1,0 +1,85 @@
+{Bienvenidos al entorno CMRE.
+Lo siguiente es un cÃ³digo de ejemplo que implementa un
+proceso que recibe un nÃºmero de avenida como parÃ¡metro,
+se posiciona en esa avenida y la recorre.}
+
+programa ejemplo
+procesos
+  proceso juntarFlores(ES flores:numero)
+  comenzar
+    mientras HayFlorEnLaBolsa
+      tomarFlor
+      flores:=flores+1
+  fin
+areas
+  areaF: AreaP (100,100,100,100)
+  areaF1: AreaP (6,1,6,1)
+  areaF1dos: AreaPC (6,2,6,60)
+  areaF2: AreaP (1,2,5,50)
+  areaF2dos: AreaP (7,2,60,50)
+robots
+  robot floreros
+  variables
+    flores,ID,calle:numero
+  comenzar
+    flores:=0
+    RecibirMensaje(ID,f)
+    RecibirMensaje(calle,f)
+    si ID=1
+      repetir 59
+        juntarFlores(flores)
+        si PosCa = (calle-1)
+          BloquearEsquina(6,calle)
+          EnviarMensaje(ID,f)
+          juntarFlores(flores)
+          mover
+          LiberarEsquina(6,calle)
+        sino
+          mover
+      juntarFlores(flores)
+    sino
+      derecha
+      Pos(1,calle)
+      repetir 59
+        juntarFlores(flores)
+        si (PosAv = 5)
+          BloquearEsquina(6,calle)
+          EnviarMensaje(ID,f)
+          juntarFlores(flores)
+          mover
+          LiberarEsquina(6,calle)
+        sino
+          mover
+      juntarFlores(flores)
+  fin
+  robot fiscalizador
+  variables
+    ID,calle:numero
+  comenzar
+    ID:=1
+    EnviarMensaje(ID,F1)
+    ID:=2
+    EnviarMensaje(ID,F2)
+    Random(calle,2,50)
+    EnviarMensaje(calle,F2)
+    EnviarMensaje(calle,F1)
+    RecibirMensaje(ID,*)
+    si ID=1
+      Informar(ID)
+    sino
+      Informar(ID)
+  fin
+variables
+  F1,F2:floreros
+  f:fiscalizador
+comenzar
+  AsignarArea(f, areaF)
+  AsignarArea(F1, areaF1)
+  AsignarArea(F1, areaF1dos)
+  AsignarArea(F2, areaF2)
+  AsignarArea(F2, areaF1dos)
+  AsignarArea(F2, areaF2dos)
+  Iniciar(f,100,100)
+  Iniciar(F1,6,1)
+  Iniciar(F2,1,2)
+fin

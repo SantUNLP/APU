@@ -1,0 +1,84 @@
+{Bienvenidos al entorno CMRE.
+Lo siguiente es un cÃ³digo de ejemplo que implementa un
+proceso que recibe un nÃºmero de avenida como parÃ¡metro,
+se posiciona en esa avenida y la recorre.}
+
+programa ejemplo
+procesos
+  proceso juntarFlores
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+  fin
+areas
+  area1: AreaP(1,1,1,1)
+  area2: AreaP(2,1,2,1)
+  area3: AreaP(3,1,3,1)
+  areaF: AreaP(9,9,9,9)
+  cuadrante: AreaPC(10,10,30,30)
+robots
+  robot florero
+  variables
+    ID,intentos,ai,ci,av,ca:numero
+  comenzar
+    Random(intentos,2,5)
+    ai:=PosAv
+    ci:=PosCa
+    RecibirMensaje(ID,fis)
+    EnviarMensaje(intentos,fis)
+    repetir intentos
+      EnviarMensaje(ID,fis)
+      RecibirMensaje(av,fis)
+      RecibirMensaje(ca,fis)
+      BloquearEsquina(av,ca)
+      Pos(av,ca)
+      juntarFlores
+      Pos(ai,ci)
+      LiberarEsquina(av,ca)
+  fin
+  robot fiscalizador
+  variables
+    ID,totalIntentos,intentos,av,ca:numero
+  comenzar
+    totalIntentos:=0
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+    RecibirMensaje(intentos,r1)
+    totalIntentos:=totalIntentos+intentos
+    RecibirMensaje(intentos,r2)
+    totalIntentos:=totalIntentos+intentos
+    RecibirMensaje(intentos,r3)
+    totalIntentos:=totalIntentos+intentos
+    repetir totalIntentos
+      Random(av,10,30)
+      Random(ca,10,30)
+      RecibirMensaje(ID,*)
+      si ID=1
+        EnviarMensaje(av,r1)
+        EnviarMensaje(ca,r1)
+      sino
+        si ID=2
+          EnviarMensaje(av,r2)
+          EnviarMensaje(ca,r2)
+        sino
+          EnviarMensaje(av,r3)
+          EnviarMensaje(ca,r3)
+    Informar(totalIntentos)
+  fin
+variables
+  r1,r2,r3:florero
+  fis:fiscalizador
+comenzar
+  AsignarArea(r1,area1)
+  AsignarArea(r2,area2)
+  AsignarArea(r3,area3)
+  AsignarArea(fis,areaF)
+  AsignarArea(r1,cuadrante)
+  AsignarArea(r2,cuadrante)
+  AsignarArea(r3,cuadrante)
+  Iniciar(r1,1,1)
+  Iniciar(r2,2,1)
+  Iniciar(r3,3,1)
+  Iniciar(fis,9,9)
+fin

@@ -1,0 +1,122 @@
+programa ejemplo
+procesos
+  proceso asignarID
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+  fin
+  proceso juntarFlores(ES flores:numero)
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+      flores:=flores+1
+  fin
+  
+  proceso juntarPapeles
+  comenzar
+    mientras HayPapelEnLaEsquina
+      tomarPapel
+  fin
+  
+  proceso RecorrerAvenidaFlores(ES flores:numero)
+  comenzar
+    repetir 9
+      juntarFlores(flores)
+      mover
+    juntarFlores(flores)
+  fin
+  
+  proceso RecorrerAvenidaPapeles
+  comenzar
+    repetir 9
+      juntarPapeles
+      mover
+    juntarPapeles
+  fin
+  
+  proceso contarFlores(ES floresmin:numero; ES quienmin:numero)
+  variables
+    quien:numero
+    flores:numero
+  comenzar
+    repetir 3
+      RecibirMensaje(quien,*)
+      si quien = 1
+        RecibirMensaje(flores,r1)
+      sino
+        si quien=2
+          RecibirMensaje(flores,r2)
+        sino
+          RecibirMensaje(flores,r3)
+      si flores < floresmin
+        floresmin:=flores
+        quienmin:=quien
+  fin
+  
+  proceso continuar (E quienmin:numero)
+  comenzar
+    si quienmin=1
+      EnviarMensaje(V,r2)
+      EnviarMensaje(V,r3)
+      EnviarMensaje(F,r1)
+    sino
+      si quienmin=2
+        EnviarMensaje(V,r1)
+        EnviarMensaje(V,r3)
+        EnviarMensaje(F,r2)
+      sino
+        EnviarMensaje(V,r2)
+        EnviarmMensaje(V,r1)
+        EnviarMensajeI(F,r3)
+  fin
+areas
+  ciudad: AreaC (1,1,100,100)
+robots
+  robot recolectores
+  variables
+    inicioX:numero
+    inicioY:numero
+    ID:numero
+    flores:numero
+    seguir:boolean
+  comenzar
+    inicioX:=PosAv
+    inicioY:=PosCa
+    seguir:=F
+    RecibirMensaje(ID,rjefe)
+    RecorrerAvenidaFlores(flores)
+    EnviarMensaje(ID,rjefe)
+    EnviarMensaje(flores,rjefe)
+    RecibirMensaje(seguir,rjefe)
+    si (seguir = V)
+      Pos(inicioX,inicioY)
+      RecorrerAvenidaPapeles
+      EnviarMensaje(ID,rjefe)
+  fin
+  robot jefe
+  variables
+    quien,quienmin:numero
+    floresmin:numero
+  comenzar
+    floresmin:=9999
+    asignarID
+    repetir 3
+      contarFlores(floresmin,quienmin)
+    continuar(quienmin)
+    RecibirMensaje(quien,*)
+    Informar(quien)
+  fin
+variables
+  r1,r2,r3:recolectores
+  rjefe:jefe
+comenzar
+  AsignarArea(r1,ciudad)
+  AsignarArea(r2,ciudad)
+  AsignarArea(r3,ciudad)
+  AsignarArea(rjefe,ciudad)
+  Iniciar(r1,5,1)
+  Iniciar(r2,6,1)
+  Iniciar(r3,7,1)
+  Iniciar(rjefe,1,1)
+fin
