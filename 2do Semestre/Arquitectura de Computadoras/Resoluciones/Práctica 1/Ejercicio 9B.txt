@@ -1,0 +1,17 @@
+org 3000h
+ROTARIZQ_N: CMP CL,0
+JZ FIN ; Si CL = 0 Termino subrutina
+ADD AH,AH ; 1000 0010 + 1000 0010 = 0000 0100
+ADC AH,0 ; 0000 0101
+DEC CL ; CL-1
+JMP ROTARIZQ_N ; Entro en loop
+FIN: RET
+org 2000h
+MOV AH, NUM1 ; AH = 1000 0010
+MOV CL, N ; CL = 3 (Se repite 3 veces)
+CALL ROTARIZQ_N ; SUBRUTINA ROTARIZQ_N veces
+HLT
+org 1000h
+NUM1 DB 82h ; 1000 0010
+N DB 3
+end
