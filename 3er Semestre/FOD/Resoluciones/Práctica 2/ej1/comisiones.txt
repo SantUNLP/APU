@@ -1,0 +1,9 @@
+1 250 San
+1 100 San
+1 300 San
+2 100 Seba
+2 50 Seba
+3 500 Ricky
+3 1000 Ricky
+4 150 Matias
+4 150 Matias
