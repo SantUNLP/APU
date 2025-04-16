@@ -1,7 +1,8 @@
-📚 ANALISTA PROGRAMADOR UNIVERSITARIO
+**📚 ANALISTA PROGRAMADOR UNIVERSITARIO**
+
 Hola! Soy *San* y este es mi repositorio personal donde documento mi recorrido por la carrera de *Analista Programador Universitario en la Facultad de Informática – UNLP.*
 
-¿Qué vas a encontrar acá?
+**¿Qué vas a encontrar acá?**
 - 📝 Apuntes teóricos  
 - 💻 Prácticos y ejercicios (resueltos y sin resolver)  
 - 📂 Material complementario de las materias que fui cursando  
